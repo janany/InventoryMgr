@@ -10,14 +10,14 @@
             canvas = physics.element,
             dY = canvas.height / physics.scale;
         vertices.push({
-            x: vertices[len-1].x,
+            x: vertices[len - 1].x,
             y: dY
         }, {
             x: vertices[0].x,
             y: dY
         });
 
-        return vertices[len-1];
+        return vertices[len - 1];
     }
 
     function getSandPattern() {
@@ -30,13 +30,15 @@
             resetY = function(dY) {
                 return (canvas.height - dY) / physics.scale;
             },
-            vertices = [{
-                x: startX,
-                y: resetY(_.random(minY, maxY))
-            }], pairs = [];
+            vertices = [
+                {
+                    x: startX,
+                    y: resetY(_.random(minY, maxY))
+                }
+            ], pairs = [];
 
         while (vX < maxX) {
-            vX += _.random(15, 25);
+            vX += _.random(15, 20);
             vY = _.random(minY, maxY);
 
             //vX = (vX > maxX)? maxX: vX;
@@ -114,32 +116,59 @@
         _.each(masterSandPattern, function(vec) {
             sandBodies.push(new Body(physics, {
                 type: "static",
-                color: "#865006",
+                //color:"#865006",
+                color: "rgba(222, 222, 222, 0.3)",
                 //color: "#8650"+ _.random(10, 99),
                 shape: "polygon",
                 points: vec,
-                friction: 10,
+                friction: 0.2,
+                restitution: 0,
+                density: 10,
                 name: "sand"
             }));
         });
     })();
 
     /*physics.element.addEventListener('click', function(e) {
-        new Body(physics, {
-            shape: "circle",
-            x: _.random(2, 20),
-            y: 1,
-            radius: _.random(1, 5)/10,
-            color: "#888",
-            restitution: _.random(5, 12)/10,
-            density: _.random(1, 10)/10
-        });
-    });*/
+     new Body(physics, {
+     shape: "circle",
+     x: _.random(2, 20),
+     y: 1,
+     radius: _.random(1, 5)/10,
+     color: "#888",
+     restitution: _.random(5, 12)/10,
+     density: _.random(1, 10)/10
+     });
+     });*/
 
     function getTankY(x, callback) {
         physics.getBodyAtPoint(x, 14, function(details) {
-           //console.log(details);
-           callback(details.body.m_userData.details.points[0]);
+            var points = details.body.m_userData.details.points;
+            var line = {
+                x1:points[0].x,
+                y1:points[0].y,
+                x2:points[1].x,
+                y2:points[1].y
+            };
+            var m = (line.y2 - line.y1) / (line.x2 - line.x1);//Slope
+            var py = line.y1 - m * (line.x1 - x);
+            console.log(m);
+            if (Math.abs(m) > .3 && false) {
+                console.log("fixing");
+                var residue = 0.1;
+                if (line.y1 > line.y2) {
+                    lastX = line.x1-residue;
+                    py = line.y1;
+                } else {
+                    lastX = line.x2-residue;
+                    py = line.y2;
+                }
+            }
+            console.log(x, py);
+            var angle = Math.atan(m);
+            console.log(angle);
+
+            callback(py, angle);
         });
     }
 
@@ -148,11 +177,10 @@
         lastX = 0;
     (function populateTanks() {
         var count = 5;
-        for(var i=0; i<count; i++) {
-            lastX = lastX+_.random(2, 5);
-            getTankY(lastX, function(point) {
-                console.log(point);
-                tanks.push(new Tank(physics, lastX, point.y, colors[i]));
+        for(var i=0; i<=count; i++) {
+            lastX = lastX+_.random(2, 3);
+            getTankY(lastX, function (tankY, angle) {
+                tanks.push(new Tank(physics, lastX, tankY, angle, colors[i]));
             });
         }
     })();
@@ -184,57 +212,90 @@
     });
 })();
 
-function Tank(_physics, x, y, color) {
-    var vertices = [{
-        x: 0,
-        y: 2/10
-    }, {
-        x: 0,
-        y: 1/10
-    }, {
-        x: 1/10,
-        y: 0
-    }, {
-        x: 3/10,
-        y: 0
-    }, {
-        x: 4/10,
-        y: 1/10
-    }, {
-        x: 4/10,
-        y: 2/10
-    }];
+function Tank(_physics, x, y, angle, color) {
+    var vertices = [
+        {
+            x: 0,
+            y: 2/10
+        },
+        {
+            x: 0,
+            y: 1/10
+        },
+        {
+            x: 1/10,
+            y: 0
+        },
+        {
+            x: 3/10,
+            y: 0
+        },
+        {
+            x: 4/10,
+            y: 1/10
+        },
+        {
+            x: 4/10,
+            y: 2/10
+        }
+    ];
 
+    console.log("Angle: ", angle);
     this.body = new Body(_physics, {
         shape: "polygon",
         x: x,
         y: y,
         points: vertices,
+        friction: 1,
+        restitution: 0,
+        density: 0,
         color: color,
         angle: 0,
+        type: "static",
         name: "tank"
+
     });
+
+
+    /*new Body(physics, {
+        color: "#001",
+        type: "static",
+        x: x+0.2,
+        y: y,
+        width: 0.1,
+        height: 1
+    });
+
+    new Body(physics, {
+        color: "#001",
+        type: "static",
+        x: x-0.2,
+        y: y,
+        width: 0.1,
+        height: 1
+    });*/
+
 
     //this.body.body.ApplyForce(new b2Vec2(0, -1.2), this.body.body.GetWorldCenter());
 
-    this.cannon = new Body(physics, {
-        color: "white",
-        width: 0.03,
-        height: 0.30,
-        x: 0,
-        y: 2/10
-    });
+    /*this.cannon = new Body(physics, {
+     color: "white",
+     width: 0.03,
+     height: 0.30,
+     x: 0,
+     y: 2/10
+     });*/
 
-    var jointDef = new b2WeldJointDef;
+    /*var jointDef = new b2WeldJointDef;
 
-    jointDef.bodyA = this.body.body;
-    jointDef.bodyB = this.cannon.body;
+     jointDef.bodyA = this.body.body;
+     jointDef.bodyB = this.cannon.body;
 
-    jointDef.localAnchorB = new b2Vec2(-2/10, 0);
+     jointDef.localAnchorB = new b2Vec2(-2/10, 0);
 
-    jointDef.collideConnected = false;
+     jointDef.collideConnected = false;
 
-    this.joint = _physics.world.CreateJoint(jointDef);
+     this.joint = _physics.world.CreateJoint(jointDef);   */
 
     var self = this;
     this.rotateCannon = function(isAntiClockwise) {
