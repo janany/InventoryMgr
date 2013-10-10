@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Mortar Mayhem</title>
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/bootstrap-combined.no-icons.min.css" >
+</head>
+<body>
+
+
+    <script type="text/x-handlebars" id="mortar">
+        <div class="container">
+            <img src="images/titlescreen.jpg" style="width:1400px;height:600px">
+            </img>
+            <div id="main-menu">
+                <span class="heading">{{t game.menu}}</span>
+                <div class="option-container">
+                    <div>
+                        <span>{{#linkTo 'game'}}{{t game.start}}{{/linkTo}}</span>
+                    </div>
+                    <div>
+                        <span>{{#linkTo 'options'}}{{t game.options}}{{/linkTo}}</span>
+                    </div>
+                    <div>
+                        <span>{{#view MM.aboutView}}<a href="#" {{action 'about'}}>{{t game.about}}</a>{{/view}}</span>
+                    </div>
+                    <div>
+                        <span>{{#linkTo 'quit'}}{{t game.quit}}{{/linkTo}}</span>
+                    </div>
+                </div>
+            </div>
+            {{#if showAbout}}
+                 {{partial 'start/about'}}
+            {{/if}}
+        </div>
+    </script>
+
+    <script type="text/x-handlebars" id="start/_about">
+        <div class="aboutDialog">
+                    <span>
+                         MORTAR MAYHEM VERSION 1.0
+                    </span>
+        </div>
+    </script>
+
+
+    <script type="text/x-handlebars" id="game">
+    </script>
+
+    <script type="text/x-handlebars" id="options">
+    </script>
+
+    <script type="text/x-handlebars" id="quit">
+    </script>
+
+
+    <script src="scripts/lib/jquery-1.9.1.js"></script>
+    <script src="scripts/lib/handlebars-1.0.0.js"></script>
+    <script src="scripts/lib/ember-1.0.0.js"></script>
+    <script src="scripts/lib/cldr.js"></script>
+    <script src="scripts/lib/ember-i18n.js"></script>
+
+
+    <script src="scripts/app/app.js"></script>
+    <script src="scripts/app/controller/mortarController.js"></script>
+    <script src="scripts/app/routes/applicationRoute.js"></script>
+
+    <script src="scripts/app/view/aboutView.js"></script>
+    <script src="scripts/app/i18n/en.js"></script>
+
+</body>
+</html>
+

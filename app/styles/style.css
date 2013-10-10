@@ -1,0 +1,56 @@
+/* Put your CSS here */
+html, body {
+    margin: 20px;
+}
+
+.container{
+    position: relative;
+}
+#main-menu{
+    position: absolute;
+    width: 250px;
+    height: 200px;
+    z-index: 10000;
+    background-color: #FFFFF4;
+    text-align: center;
+    left: 40%;
+    top: 40%;
+}
+
+#main-menu span{
+    display: block;
+    text-align: center;
+
+}
+.heading{
+    letter-spacing: 10px;
+    margin-top: 4px;
+}
+.option-container{
+    width: 80%;
+    height: 80%;
+    background-color: black;
+    margin-left: 10%;
+    margin-top: 3%;
+}
+.option-container span{
+    padding: 10px;
+}
+
+.aboutDialog{
+    position: absolute;
+    background-color: gray;
+    left: 38%;
+    top: 44%;
+    z-index: 10000;
+    width: 300px;
+    height: 150px;
+}
+.aboutDialog span{
+    display: block;
+    text-align: center;
+    background-color: black;
+    width: 90%;
+    height: 90%;
+    margin: 7px 15px;
+}
