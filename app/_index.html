@@ -4,10 +4,7 @@
     <meta charset="utf-8">
     <title>Mortar Mayhem</title>
 
-      <link href="lib/css/normalize.css" rel="stylesheet" />
-  <link href="lib/css/bootstrap.css" rel="stylesheet" />
-  <link href="styles/style.css" rel="stylesheet" />
-
+    <%= includeCss %>
 </head>
 <body>
 
@@ -52,17 +49,7 @@
     <script type="text/x-handlebars" id="options">
     </script>
 
-    <script src="lib/js/jquery-1.9.1.js"></script>
-<script src="lib/js/handlebars-1.0.0.js"></script>
-<script src="lib/js/ember-1.0.0.js"></script>
-<script src="lib/js/cldr.js"></script>
-<script src="lib/js/ember-i18n.js"></script>
-<script src="scripts/app.js"></script>
-<script src="scripts/controller/MortarController.js"></script>
-<script src="scripts/routes/ApplicationRoute.js"></script>
-<script src="scripts/view/AboutView.js"></script>
-<script src="scripts/i18n/en.js"></script>
-
+    <%= includeScripts %>
 
 </body>
 </html>
