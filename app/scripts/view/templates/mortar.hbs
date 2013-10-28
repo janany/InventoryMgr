@@ -1,0 +1,24 @@
+
+<div class="main-container">
+
+    <div id="main-menu">
+        <header class="heading">{{t game.menu}}</header>
+        <div class="option-container">
+            <div>
+                <span>{{#linkTo 'game'}}{{t game.start}}{{/linkTo}}</span>
+            </div>
+            <div>
+                <span>{{#linkTo 'options'}}{{t game.options}}{{/linkTo}}</span>
+            </div>
+            <div>
+                <span>{{#view MM.aboutView}}<a href="#" {{action 'about'}}>{{t game.about}}</a>{{/view}}</span>
+            </div>
+            <div>
+                <span>{{#linkTo 'quit'}}{{t game.quit}}{{/linkTo}}</span>
+            </div>
+        </div>
+    </div>
+    {{#if showAbout}}
+         {{partial 'start/about'}}
+    {{/if}}
+</div>

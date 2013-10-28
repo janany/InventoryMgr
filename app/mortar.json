@@ -1,6 +1,7 @@
 {
 
     "scripts": [
+        "dist/scripts/templates.js",
         "scripts/app.js",
         "scripts/controller/MortarController.js",
         "scripts/routes/ApplicationRoute.js",
@@ -23,7 +24,7 @@
     },
 
     "styles": [
-            "styles/style.css"
+            "dist/styles/style.css"
     ]
 
 
